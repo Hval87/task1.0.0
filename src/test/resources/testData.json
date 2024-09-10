@@ -1,0 +1,5 @@
+{
+  "dataSource": "src/test/resources/admin_users.json",
+  "dataSource2": "src/test/resources/admin_users.yaml"
+
+}
