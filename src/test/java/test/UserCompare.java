@@ -12,20 +12,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserCompare extends BaseTest {
+    private ArrayList<User> usersJson;
+    private ArrayList<User> usersYaml;
     @Test
     public void test() {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        List<User> list = new ArrayList<>();
+       usersJson = new ArrayList<>();
         try {
-            list = mapper.readValue(new File(sourceToData), new TypeReference<>() {
+           usersJson = mapper.readValue(new File(sourceToData), new TypeReference<>() {
             });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Assert.assertTrue(list.size() > 1, "is not array");
-        list.stream().forEach(x -> Assert.assertNotNull(x.getName(),"array is empty"));
-        Assert.assertTrue(list.stream().allMatch(user -> user.getClass().isAssignableFrom(User.class)), "array doesn't consist from users ");
-        for (User user : list) {
+        Assert.assertTrue(usersJson.size() > 1, "is not array");
+        usersJson.stream().forEach(x -> Assert.assertNotNull(x.getName(),"array is empty"));
+        Assert.assertTrue(usersJson.stream().allMatch(user -> user.getClass().isAssignableFrom(User.class)), "array doesn't consist from users ");
+        for (User user : usersJson) {
             if (user.getAddress() != null) {
                 Assert.assertNotNull(user.getAddress().getBuilding(), "building is empty in " + user.getName());
                 Assert.assertNotNull(user.getAddress().getStreet(), "street is empty in " + user.getName());
@@ -35,19 +37,19 @@ public class UserCompare extends BaseTest {
 
     }
     @Test
-    public static void test2(){
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        List<User> list = new ArrayList<>();
+    public void test2(){
+        yamlMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+         usersYaml = new ArrayList<>();
         try {
-            list = mapper.readValue(new File(sourceToData), new TypeReference<>() {
+            usersYaml = yamlMapper.readValue(new File(sourceToData2), new TypeReference<>() {
             });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        Assert.assertTrue(list.size() > 1, "is not array");
-        list.stream().forEach(x -> Assert.assertNotNull(x.getName(),"array is empty"));
-        Assert.assertTrue(list.stream().allMatch(user -> user.getClass().isAssignableFrom(User.class)), "array doesn't consist from users ");
-        for (User user : list) {
+        Assert.assertTrue(usersYaml.size() > 1, "is not array");
+        usersYaml.stream().forEach(x -> Assert.assertNotNull(x.getName(),"array is empty"));
+        Assert.assertTrue(usersYaml.stream().allMatch(user -> user.getClass().isAssignableFrom(User.class)), "array doesn't consist from users ");
+        for (User user : usersYaml) {
             if (user.getAddress() != null) {
                 Assert.assertNotNull(user.getAddress().getBuilding(), "building is empty in " + user.getName());
                 Assert.assertNotNull(user.getAddress().getStreet(), "street is empty in " + user.getName());
